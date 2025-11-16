@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Confidential</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* Stili che riprendono il design del sito principale */
+        :root {
+            --bg-color: #f5f4f0;
+            --text-dark: #222222;
+            --text-light: #555;
+            --c1: #3a5f5f; /* Colore elegante del sito */
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'Manrope', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .message-container {
+            background-color: #ffffff;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+            /* Un tocco elegante: un bordo superiore con il colore del sito */
+            border-top: 5px solid var(--c1);
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Bottone per tornare indietro */
+        .back-link {
+            display: inline-block;
+            background-color: var(--c1);
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            font-weight: 500;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(58, 95, 95, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .back-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(80, 133, 133, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="message-container">
+        <h2>Project Confidential</h2>
+        <p>
+            This academic project is currently unavailable. Due to my current employment 
+            with Automobili Lamborghini, the content is kept confidential.
+        </p>
+        <a href="index.html" class="back-link">Go Back to Portfolio</a>
+    </div>
+
+</body>
+</html>

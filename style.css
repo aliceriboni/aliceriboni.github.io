@@ -1,0 +1,396 @@
+/* --- 1. GLOBAL VARIABLES AND SETTINGS --- */
+:root {
+    --bg-color: #f5f4f0;
+    --text-dark: #222222;
+    --text-light: #555;
+    
+    --c1: #3a5f5f; /* Desaturated petrol green/blue */
+    --c4: #508585; /* Lighter version for hover */
+    --c5: #3a5f5f; /* Links (same as primary) */
+
+    --font-heading: 'Cormorant Garamond', serif;
+    --font-body: 'Manrope', sans-serif;
+    
+    --line-color: rgba(58, 95, 95, 0.3); 
+}
+
+/* ... (Global * and body settings unchanged) ... */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-color);
+}
+body {
+    font-family: var(--font-body);
+    color: var(--text-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none; /* Hide the default cursor */
+    font-weight: 300;
+}
+
+/* --- 2. GENERATIVE BACKGROUND (Canvas) --- */
+#wave-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.6; 
+}
+
+.main-content {
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+}
+
+
+/* * --- 3. CUSTOM CURSOR (Versione "Scia") ---
+ * --- MODIFICA RICHIESTA: Cursore "Scia" Elegante ---
+ */
+.cursor-follower {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 10px;  /* Dimensione base dei punti */
+    height: 10px; /* Dimensione base dei punti */
+    background-color: white; /* Bianco per blend mode */
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    
+    /* * --- MODIFICA: Aggiunta transizione per colore e blend-mode ---
+     */
+    transition: width 0.3s cubic-bezier(0.76, 0, 0.24, 1), 
+                height 0.3s cubic-bezier(0.76, 0, 0.24, 1),
+                background-color 0.3s ease,
+                mix-blend-mode 0.1s ease; /* Blend mode cambia velocemente */
+}
+
+/* * --- MODIFICA RICHIESTA: Cursore più piccolo e colorato sull'hover ---
+ */
+body.cursor-hovered .cursor-follower {
+    width: 6px;  /* Rimpicciolisce */
+    height: 6px; /* Rimpicciolisce */
+    mix-blend-mode: normal; /* Disattiva l'inversione */
+    background-color: var(--c1); /* Imposta il colore elegante */
+}
+
+
+/* --- 4. "FADE-IN" ON SCROLL ANIMATIONS (Unchanged) --- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.timeline-item.fade-in:nth-child(2) { transition-delay: 0.1s; }
+.timeline-item.fade-in:nth-child(3) { transition-delay: 0.2s; }
+.timeline-item.fade-in:nth-child(4) { transition-delay: 0.3s; }
+.timeline-item.fade-in:nth-child(5) { transition-delay: 0.4s; }
+.skill-category.fade-in:nth-child(2) { transition-delay: 0.2s; }
+
+
+/* --- 5. SITE STYLES (Unchanged) --- */
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--text-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+h1 { 
+    font-size: 5.5rem;
+    font-weight: 700;
+}
+h2 { 
+    font-size: 3rem; 
+    margin-bottom: 40px; 
+    text-align: center; 
+}
+section, footer {
+    padding: 100px 10%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+.content-section, footer {
+    background-color: var(--bg-color);
+}
+.hero-section {
+    background-color: transparent;
+}
+a {
+    color: var(--c5);
+    text-decoration: none;
+    cursor: none; 
+}
+.hero-section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 0;
+}
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 5%;
+}
+.logo {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+nav ul { list-style: none; display: flex; }
+nav ul li { margin-left: 30px; }
+nav ul li a {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    padding: 5px 0;
+    letter-spacing: 0.5px;
+}
+nav ul li a span {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+nav ul li a::before {
+    content: attr(data-hover);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    color: var(--text-dark);
+    transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+nav ul li a:hover span {
+    transform: translateY(-100%);
+}
+nav ul li a:hover::before {
+    transform: translateY(-100%);
+}
+.hero-text h1 { line-height: 1.1; }
+.hero-text p {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    margin-top: 10px;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+.cta-button {
+    display: inline-block;
+    background-color: var(--c1);
+    color: #ffffff;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 30px;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(58, 95, 95, 0.2);
+    letter-spacing: 1px;
+}
+.cta-button:hover {
+    background-color: var(--c4);
+    color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(80, 133, 133, 0.3);
+}
+.profilo-layout { display: flex; align-items: center; gap: 50px; }
+.profilo-img { flex: 1; max-width: 300px; }
+.profilo-img img { width: 100%; border-radius: 50%; }
+.profilo-text { flex: 2; font-size: 1.1rem; }
+.timeline-item {
+    padding: 20px 30px;
+    border-left: 3px solid var(--c1);
+    position: relative;
+    margin-bottom: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -12.5px;
+    top: 25px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--c1);
+    border: 4px solid var(--bg-color);
+    transition: background-color 0.3s ease;
+}
+.timeline-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-color: var(--c4);
+}
+.timeline-item:hover::before {
+    background-color: var(--c4);
+}
+.timeline-item h3 { margin-bottom: 5px; font-size: 1.4rem; font-weight: 600; }
+.timeline-sub {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    display: block;
+}
+.timeline-item ul { margin-left: 20px; margin-top: 10px; }
+.skills-layout { display: flex; justify-content: space-around; gap: 40px; margin-bottom: 50px; }
+.skill-category { flex-basis: 45%; }
+.skill-category h3 { color: var(--c1); margin-bottom: 15px; font-size: 1.4rem; }
+
+/* * --- 6. STILI PROGETTI CLICCABILI (MODIFICATI) ---
+ * --- MODIFICA RICHIESTA: Rendi i progetti più evidenti ---
+ */
+.project-list {
+    list-style-type: none; 
+    margin-left: 0;       
+    margin-top: 15px; /* Più spazio dal titolo "Key Projects" */
+    padding-left: 0;
+    display: flex; /* Li mette in riga */
+    flex-wrap: wrap; /* Permette di andare a capo */
+    gap: 10px; /* Spazio tra i tag */
+}
+
+/* Rimuovi stili vecchi */
+.project-list li {
+   margin-bottom: 0; /* Gestito dal gap */
+   padding-left: 0; /* Rimosso */
+   position: static; /* Rimosso */
+}
+.project-list li::before {
+    content: none; /* Rimuovi la vecchia freccia '→' */
+}
+
+/* Stile del link come "Tag" o "Pillola" */
+.project-list a {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid var(--c1); /* Bordo elegante */
+    border-radius: 20px; /* Forma a pillola */
+    color: var(--c1); /* Colore del testo elegante */
+    font-weight: 500; /* Leggermente più bold */
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover: Riempi il tag */
+.project-list a:hover {
+    background-color: var(--c1); /* Riempimento */
+    color: #ffffff; /* Testo bianco */
+    text-decoration: none; /* Niente sottolineatura */
+}
+
+
+/* --- 7. FOOTER / CONTACT STYLES (Unchanged) --- */
+footer {
+    text-align: left; 
+    background-color: var(--bg-color);
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 50px;
+    margin-bottom: 50px;
+}
+.footer-left {
+    flex: 1;
+}
+.footer-left h2 {
+    text-align: left; 
+    margin-bottom: 20px;
+}
+.footer-left p {
+    font-size: 1.1rem;
+    max-width: 400px;
+    margin-bottom: 30px;
+}
+.footer-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 0; 
+    width: 100%;
+    max-width: 350px;
+}
+.contact-link-item {
+    display: block;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    color: var(--text-light);
+}
+.contact-link-item:hover {
+    background-color: #ffffff;
+    border-color: var(--c1);
+    transform: translateY(-3px);
+    color: var(--text-dark);
+}
+.contact-link-item strong {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--c1);
+    margin-bottom: 5px;
+}
+.contact-link-item span {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+.footer-logo {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-top: 20px;
+}
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
