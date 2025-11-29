@@ -394,3 +394,50 @@ footer {
     font-size: 0.9rem;
     color: var(--text-light);
 }
+
+@media (max-width: 768px) {
+    
+    /* 1. Impila le due colonne (sinistra e destra)
+         verticalmente invece che orizzontalmente.
+    */
+    .footer-container {
+        flex-direction: column; 
+        align-items: center;  /* Centra i blocchi */
+        gap: 40px;            /* Riduci il gap per lo stacking */
+    }
+
+    /* 2. Centra il testo e il logo nel blocco di sinistra.
+    */
+    .footer-left {
+        align-items: center;  /* Centra il logo AR */
+        text-align: center;   /* Centra il testo */
+    }
+
+    /* 3. Sovrascrivi l'allineamento a sinistra dell'h2.
+    */
+    .footer-left h2 {
+        text-align: center;
+    }
+
+    /* 4. Fai in modo che il paragrafo si adatti bene.
+    */
+    .footer-left p {
+        max-width: 100%;
+    }
+
+    /* 5. Assicurati che il blocco di destra (link)
+         usi tutto lo spazio e sia centrato.
+    */
+    .footer-right {
+        width: 100%;
+        justify-content: center; /* Centra il box dei link */
+    }
+
+    /* 6. Il box dei link può essere un po' più largo
+         su mobile per riempire lo spazio.
+    */
+    .contact-links {
+        width: 100%;
+        max-width: 450px; 
+    }
+}
