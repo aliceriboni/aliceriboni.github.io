@@ -397,47 +397,95 @@ footer {
 
 @media (max-width: 768px) {
     
-    /* 1. Impila le due colonne (sinistra e destra)
-         verticalmente invece che orizzontalmente.
-    */
+    /* --- 1. OTTIMIZZAZIONE GENERALE SPAZI --- */
+    section, footer {
+        padding: 60px 5%; /* Ridotto da 100px 10% a 60px 5% per guadagnare spazio laterale */
+    }
+
+    h1 {
+        font-size: 3rem; /* Ridotto da 5.5rem a 3rem per evitare rotture */
+    }
+    
+    h2 {
+        font-size: 2.2rem; /* Ridimensionamento titoli sezione */
+    }
+
+    /* --- 2. HEADER E NAVIGAZIONE --- */
+    nav {
+        flex-direction: column; /* Impila Logo e Menu */
+        padding: 20px;
+        position: relative; /* Evita sovrapposizioni con l'H1 su schermi corti */
+    }
+
+    nav ul {
+        margin-top: 15px;
+        padding-left: 0;
+        gap: 15px; /* Spazio tra i link */
+    }
+
+    nav ul li {
+        margin-left: 0; /* Rimuove margine sinistro desktop */
+        margin: 0 10px;
+    }
+
+    .hero-text h1 {
+        margin-top: 20px;
+    }
+
+    /* --- 3. SEZIONE PROFILO (STACKING) --- */
+    .profilo-layout {
+        flex-direction: column; /* Immagine sopra, testo sotto */
+        gap: 30px;
+        text-align: center; /* Opzionale: centra il testo su mobile */
+    }
+
+    .profilo-img {
+        max-width: 200px; /* Riduce leggermente l'immagine */
+        margin: 0 auto;
+    }
+
+    /* --- 4. TIMELINE (ESPERIENZA) --- */
+    .timeline-item {
+        padding: 20px 15px; /* Riduce padding laterale interno */
+    }
+    
+    .timeline-item h3 {
+        font-size: 1.2rem; /* Titoli job meno ingombranti */
+    }
+
+    /* --- 5. SKILLS (STACKING) --- */
+    .skills-layout {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    /* --- 6. FOOTER (GIA PRESENTE MA OTTIMIZZATO) --- */
     .footer-container {
         flex-direction: column; 
-        align-items: center;  /* Centra i blocchi */
-        gap: 40px;            /* Riduci il gap per lo stacking */
+        align-items: center;
+        gap: 40px;
     }
 
-    /* 2. Centra il testo e il logo nel blocco di sinistra.
-    */
     .footer-left {
-        align-items: center;  /* Centra il logo AR */
-        text-align: center;   /* Centra il testo */
+        align-items: center;
+        text-align: center;
     }
 
-    /* 3. Sovrascrivi l'allineamento a sinistra dell'h2.
-    */
     .footer-left h2 {
         text-align: center;
     }
 
-    /* 4. Fai in modo che il paragrafo si adatti bene.
-    */
     .footer-left p {
         max-width: 100%;
     }
 
-    /* 5. Assicurati che il blocco di destra (link)
-         usi tutto lo spazio e sia centrato.
-    */
     .footer-right {
         width: 100%;
-        justify-content: center; /* Centra il box dei link */
+        justify-content: center;
     }
 
-    /* 6. Il box dei link può essere un po' più largo
-         su mobile per riempire lo spazio.
-    */
     .contact-links {
         width: 100%;
-        max-width: 450px; 
+        max-width: 100%; /* Occupa tutta la larghezza disponibile */
     }
 }
